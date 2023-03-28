@@ -3,7 +3,7 @@ const path = require("path");
 
 /** @type {import("eslint").Linter.Config} */
 const config = {
-    root: true,
+  root: true,
   overrides: [
     {
       extends: [
