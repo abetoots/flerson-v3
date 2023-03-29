@@ -3,5 +3,18 @@
     { "directory": "apps/docs", "changeProcessCWD": true },
     { "directory": "apps/web", "changeProcessCWD": true },
     { "directory": "apps/expo", "changeProcessCWD": true }
-  ]
+  ],
+  //NOTE: We are using nested CSS through tailwindcss/nesting PostCSS plugin
+  //install this extension for correct syntax highlighting for .css files
+  //https://marketplace.visualstudio.com/items?itemName=csstools.postcss
+  //WATCH: Until CSS nesting spec is finalized and supported
+  //https://github.com/microsoft/vscode/issues/147824
+  "emmet.includeLanguages": {
+    // map it to tailwindcss so Tailwind CSS Intellisense can
+    // apply it's thing
+    "postcss": "tailwindcss"
+  },
+  "files.associations": {
+    "*.css": "postcss"
+  }
 }
