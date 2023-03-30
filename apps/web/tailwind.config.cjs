@@ -1,6 +1,18 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const defaultTheme = require("tailwindcss/defaultTheme");
 const tailwindColors = require("tailwindcss/colors");
+
+// @ts-ignore
+delete tailwindColors["lightBlue"];
+// @ts-ignore
+delete tailwindColors["warmGray"];
+// @ts-ignore
+delete tailwindColors["trueGray"];
+// @ts-ignore
+delete tailwindColors["coolGray"];
+// @ts-ignore
+delete tailwindColors["blueGray"];
 
 const colors = {
   primary: "var(--primary)",

@@ -19,6 +19,7 @@ import { type Session } from "next-auth";
 
 import { getServerAuthSession } from "~/server/auth";
 import { prisma } from "~/server/db";
+import { z } from "zod";
 
 type CreateContextOptions = {
   session: Session | null;
@@ -32,7 +33,7 @@ type CreateContextOptions = {
  * - testing, so we don't have to mock Next.js' req/res
  * - tRPC's `createSSGHelpers`, where we don't have req/res
  *
- * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
+ * @see https://create.t3.gg/en/usage/trpc#-servertrpccontextts
  */
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
@@ -128,3 +129,60 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
+
+//Middleware indicating a router implements offset based pagination
+export const isPaginable = z.object({
+  p: z.number().optional(),
+  ps: z.number().optional(),
+  getAll: z.boolean().optional(),
+});
+
+type Paginable = z.infer<typeof isPaginable>;
+
+//Middleware indicating a router implements cursor based pagination
+export const isCursorPaginable = z.object({
+  ps: z.number().optional(),
+  prevCursor: z.string().optional(),
+});
+
+type CursorPaginable = z.infer<typeof isCursorPaginable>;
+
+//Middleware indicating a router implements search
+export const isSearchable = z.object({ q: z.string().nullish() });
+
+/**
+ * Get mongodb queries for a search string and the fields to search for.
+ *
+ * @param fields Which fields to include when searching the value
+ * @param toSearch The value to search
+ */
+export function getSearchQueries<T>(
+  fields: Array<keyof T>,
+  toSearch?: string | null
+) {
+  const searchQueries = [];
+  const shouldSearch = !!toSearch;
+  if (toSearch) {
+    for (const field of fields) {
+      searchQueries.push({ [field]: new RegExp(toSearch, "i") });
+    }
+  }
+  return { shouldSearch, searchQueries };
+}
+
+/**
+ * Get the skip limit to be used for offset/cursor based pagination
+ */
+export function getSkipLimit(
+  input: Paginable & CursorPaginable,
+  defaultSize = 10
+) {
+  const p = input?.p || 1;
+  const ps = input?.ps || defaultSize;
+  //If cursor based, we set skip to 1 to skip the prevCursor itself
+  //or not, depending on the behavior you want
+  //else, we skip normally for offset based
+  const skip = input?.prevCursor ? 1 : (p - 1) * ps;
+
+  return { skip, limit: ps };
+}
