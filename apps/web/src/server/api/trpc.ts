@@ -141,11 +141,9 @@ type Paginable = z.infer<typeof isPaginable>;
 
 //Middleware indicating a router implements cursor based pagination
 export const isCursorPaginable = z.object({
-  ps: z.number().optional(),
-  prevCursor: z.string().optional(),
+  limit: z.number(),
+  cursor: z.string().optional(),
 });
-
-type CursorPaginable = z.infer<typeof isCursorPaginable>;
 
 //Middleware indicating a router implements search
 export const isSearchable = z.object({ q: z.string().nullish() });
@@ -171,18 +169,12 @@ export function getSearchQueries<T>(
 }
 
 /**
- * Get the skip limit to be used for offset/cursor based pagination
+ * Get the skip limit to be used for offset based pagination
  */
-export function getSkipLimit(
-  input: Paginable & CursorPaginable,
-  defaultSize = 10
-) {
+export function getSkipLimit(input: Paginable, defaultSize = 10) {
   const p = input?.p || 1;
   const ps = input?.ps || defaultSize;
-  //If cursor based, we set skip to 1 to skip the prevCursor itself
-  //or not, depending on the behavior you want
-  //else, we skip normally for offset based
-  const skip = input?.prevCursor ? 1 : (p - 1) * ps;
+  const skip = (p - 1) * ps;
 
   return { skip, limit: ps };
 }

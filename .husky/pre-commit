@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-NODE_ENV="development" pnpm exec run-p lint typecheck
+NODE_ENV="production" pnpm exec run-p lint typecheck test

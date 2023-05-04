@@ -1,3 +1,5 @@
+@use "../../sass/mixins" as *;
+
 .Header {
   display: flex;
   justify-content: space-around;
@@ -11,7 +13,7 @@
 
   &__postJobButton {
     padding: 10px 15px;
-    border: 2px solid var(--primary);
+    border: 2px solid var(--primary-color);
     border-radius: 5px;
     background-color: transparent;
     transition: all 0.3s ease;
@@ -21,7 +23,7 @@
     color: black;
 
     &:hover {
-      background-color: var(--primary);
+      background-color: var(--primary-color);
     }
   }
 }

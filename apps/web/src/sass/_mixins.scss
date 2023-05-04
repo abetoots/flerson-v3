@@ -1,5 +1,15 @@
 @use "sass:math";
 
+@mixin paper($padding: 1.5rem) {
+  border-color: rgb(229 231 235);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  border-radius: 0.5rem;
+  border-width: 1px;
+  border-style: solid;
+  padding: $padding;
+  background-color: white;
+}
+
 @function strip-unit($value) {
   @return math.div($value, ($value * 0 + 1));
 }

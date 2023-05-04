@@ -15,11 +15,11 @@ delete tailwindColors["coolGray"];
 delete tailwindColors["blueGray"];
 
 const colors = {
-  primary: "var(--primary)",
-  "accent-1": "var(--accent-1)",
-  "accent-2": "var(--accent-2)",
-  "primary-bg": "var(--primary-bg)",
-  "accent-bg": "var(--accent-bg)",
+  primary: "var(--primary-color)",
+  "accent-1": "var(--accent-color-1)",
+  "accent-2": "var(--accent-color-2)",
+  "accent-bg-1": "var(--accent-bg-1)",
+  "accent-bg-2": "var(--accent-bg-2)",
   ...tailwindColors,
 };
 

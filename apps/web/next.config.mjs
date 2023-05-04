@@ -1,9 +1,3 @@
-import path from "path";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
  * This is especially useful for Docker builds.
@@ -24,20 +18,13 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
-  transpilePackages: ["ui"],
-  sassOptions: {
-    includePaths: [path.resolve(__dirname, "src/sass/_mixins.scss")],
-    //Automatically append this for imported .scss file
-    //IMPORTANT: Notice how the import path used below
-    //is specifically for .scss files inside a components/[ComponentName] folder
-    prependData: `
-            @use "../../sass/mixins" as *;
-            `,
-  },
+  transpilePackages: ["flerson-lib"],
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
+      //use url-loader instead of asset/inline
       use: ["@svgr/webpack", "url-loader"],
+      type: "javascript/auto", //prevents duplicate assets
     });
 
     return config;
@@ -45,6 +32,7 @@ const config = {
   //https://nextjs.org/docs/api-reference/next/image#dangerously-allow-svg
   images: {
     dangerouslyAllowSVG: true,
+    domains: ["example.com"],
     contentDispositionType: "attachment",
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },

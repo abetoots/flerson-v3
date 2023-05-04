@@ -1,6 +1,9 @@
+//Components
+import Focus from "../hoc/Focus/Focus";
+
+//Misc
 import React, { forwardRef } from "react";
 import { exposeStyles } from "~/utils/styles";
-
 import styles from "./Button.module.css";
 
 //Define which styles of the component you want to expose. Only what you expose can be overridden.
@@ -12,6 +15,7 @@ import styles from "./Button.module.css";
 const useStyles = exposeStyles({
   replace: {
     root: styles.Button || "",
+    focused: "",
   },
 });
 
@@ -31,15 +35,17 @@ const Button = forwardRef<Ref, ButtonProps>((props, ref) => {
   const classes = useStyles(props);
 
   return (
-    <button
-      ref={ref}
-      type={props.type}
-      className={`${classes.root} ${styles.Button__default || ""}`}
-      onClick={props.onClick}
-      disabled={props.disabled}
-    >
-      {props.children}
-    </button>
+    <Focus applyClassName={classes.focused}>
+      <button
+        ref={ref}
+        type={props.type}
+        className={`${classes.root} ${styles.Button__default || ""}`}
+        onClick={props.onClick}
+        disabled={props.disabled}
+      >
+        {props.children}
+      </button>
+    </Focus>
   );
 });
 Button.displayName = "Button";

@@ -1,0 +1,13 @@
+{
+  "name": "flerson-lib",
+  "main": "index.ts",
+  "types": "index.ts",
+  "dependencies": {
+    "debug": "^4.3.4",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@types/debug": "^4.1.7",
+    "typescript": "^5.0.2"
+  }
+}

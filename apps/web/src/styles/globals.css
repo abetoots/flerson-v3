@@ -3,9 +3,37 @@
 @tailwind utilities;
 
 :root {
-  --primary: #f7901e;
-  --accent-1: #4392f1;
-  --accent-2: #dc493a;
-  --primary-bg: #d2dff5;
-  --accent-bg: #fcc3a8;
+  --primary-color: #f7901e;
+  --accent-color-1: #4392f1;
+  --accent-color-2: #dc493a;
+  --accent-bg-1: #d2dff5;
+  --accent-bg-2: #c6defa;
+}
+
+@layer utilities {
+  .flerson-outline {
+    @apply outline-dotted outline-2 outline-offset-2 outline-black;
+  }
+}
+
+@layer components {
+  .flerson-paper {
+    border-color: rgb(229 231 235);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+      0 4px 6px -4px rgb(0 0 0 / 0.1);
+    border-width: 1px;
+    @apply rounded-lg border-solid bg-white p-6;
+  }
+
+  .flerson-h1 {
+    @apply text-3xl font-bold leading-9;
+  }
+
+  .flerson-h2 {
+    @apply text-2xl font-semibold leading-7;
+  }
+
+  .flerson-h3 {
+    @apply text-xl font-medium leading-6;
+  }
 }

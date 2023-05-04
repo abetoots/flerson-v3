@@ -1,0 +1,117 @@
+@use "../../../sass/mixins" as *;
+
+//1. Position both default checkbox input and image to a relative parent
+//2. Image should be seen but the input should be on top of the image so that
+//clicking it should check the checkbox. This means they should be the same height and width.
+//3. The actual visual checkbox is handled by ::before pseudo
+//4. When :checked, the ::before pseudo should handle checked visual
+.Categories {
+  $self: &;
+
+  &__fieldset {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem 0.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(100px, max-content));
+    margin-bottom: 1rem;
+  }
+
+  &__checkboxContainer {
+    position: relative;
+    &._focused {
+      outline-offset: 2px;
+      outline: 2px dotted black;
+    }
+  }
+
+  &__image {
+    @include fluid-type(320px, 1440px, 40px, 50px, "width");
+    @include fluid-type(320px, 1440px, 40px, 50px, "height");
+  }
+
+  &__checkboxInput {
+    appearance: none;
+    opacity: 0;
+    position: absolute;
+  }
+
+  &__checkboxLabel {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    text-align: center;
+  }
+
+  &__customCheckbox::before {
+    position: absolute;
+    top: -5px;
+    right: 0;
+    width: 1rem;
+    height: 1rem;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+    position: absolute;
+    content: "";
+  }
+
+  &__checkboxInput {
+    &:checked + label #{$self}__customCheckbox::before {
+      background-color: rgb(164, 238, 164);
+      content: "✔️";
+      font-size: 9px;
+    }
+  }
+}
+
+.EmploymentTypes {
+  &__checkboxContainer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  &__checkboxInput {
+    margin-right: 1rem;
+  }
+}
+
+.JobFilters {
+  display: none;
+  @include paper();
+
+  &._show {
+    display: block;
+  }
+
+  @apply items-center gap-2 md:grid md:divide-x-[1px];
+  grid-template-columns: 60% 1fr 1fr;
+
+  &__item {
+    @apply mb-2 h-full flex-col items-center justify-center px-4 md:flex;
+  }
+
+  //filters submit button
+  &__filterButton {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+    cursor: pointer;
+    border: 2px solid var(--accent-color-1);
+    border-radius: 4px;
+    background-color: transparent;
+    -webkit-tap-highlight-color: transparent;
+    color: #4392f1;
+    height: max-content;
+    min-height: 2.5rem;
+    padding: 0 15px;
+    transition: all 0.15s ease;
+
+    &:hover {
+      background-color: var(--accent-bg-1);
+    }
+  }
+}

@@ -71,7 +71,7 @@ export const exposeStyles = <T extends ExposeStylesProps>({
           const newVal = val as string;
           //merge classnames
           if (newVal) {
-            returnObj[k] = oldVal ? `${oldVal} ${newVal}` : oldVal; //merge by appending the class
+            returnObj[k] = oldVal ? `${oldVal} ${newVal}` : newVal; //merge by appending the class
           }
         } else if (replaceKeys[key] && replace) {
           const oldVal = replace[key] as string;

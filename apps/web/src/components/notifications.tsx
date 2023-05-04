@@ -1,15 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { toast } from "react-toastify";
+//Components
 import {
-  CheckCircleIcon,
-  ExclamationCircleIcon,
-  InformationCircleIcon,
-} from "@heroicons/react/24/outline";
-import { XMarkIcon } from "@heroicons/react/20/solid";
-import type { ToastContentProps, ToastOptions } from "react-toastify";
+  HiOutlineCheckCircle,
+  HiOutlineExclamationCircle,
+  HiOutlineInformationCircle,
+  HiXMark,
+} from "react-icons/hi2";
+
+//Misc
+import { toast } from "react-toastify";
 import { exposeStyles } from "~/utils/styles";
+
+//Types
+import type { ToastContentProps, ToastOptions } from "react-toastify";
 
 type NotificationProps = Partial<ToastContentProps> & {
   className?: string;
@@ -50,7 +55,7 @@ export default function Notification({
       case "success":
         icon = (
           <div className="flex-shrink-0">
-            <CheckCircleIcon
+            <HiOutlineCheckCircle
               className="h-6 w-6 text-green-400"
               aria-hidden="true"
             />
@@ -60,7 +65,7 @@ export default function Notification({
       case "error":
         icon = (
           <div className="flex-shrink-0">
-            <ExclamationCircleIcon
+            <HiOutlineExclamationCircle
               className="h-6 w-6 text-red-400"
               aria-hidden="true"
             />
@@ -70,7 +75,7 @@ export default function Notification({
       case "info":
         icon = (
           <div className="flex-shrink-0">
-            <InformationCircleIcon
+            <HiOutlineInformationCircle
               className="h-6 w-6 text-blue-400"
               aria-hidden="true"
             />
@@ -117,7 +122,7 @@ export default function Notification({
           {props.closeIcon ? (
             props.closeIcon
           ) : (
-            <XMarkIcon className="h-5 w-5" aria-hidden="true" />
+            <HiXMark className="h-5 w-5" aria-hidden="true" />
           )}
         </button>
       </div>

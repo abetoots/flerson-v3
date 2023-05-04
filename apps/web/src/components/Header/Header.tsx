@@ -1,6 +1,9 @@
+//Components
 import Logo from "~/components/Logo/Logo";
 import Button from "~/components/Button/Button";
 import Link from "next/link";
+
+//Misc
 import styles from "./Header.module.scss";
 
 //Components

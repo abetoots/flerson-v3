@@ -1,0 +1,78 @@
+@use "../../sass/mixins" as *;
+
+.JobCard {
+  &._focused {
+    border: 1px solid var(--accent-color-1);
+  }
+
+  &__tags {
+    font-size: 0.6em;
+    font-weight: bold;
+    cursor: pointer;
+    @apply mb-6 md:mb-0;
+  }
+
+  &__tag {
+    display: inline-block;
+    text-transform: uppercase;
+    border: 2px solid black;
+    padding: 0 4px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    background-color: rgba(255, 255, 255, 0.5);
+
+    &:hover {
+      background-color: var(--theme-bg-2);
+    }
+
+    &._primary {
+      &:hover {
+        background-color: black;
+        color: white;
+      }
+    }
+  }
+
+  &__initialsWrap {
+    box-sizing: content-box;
+    width: 80px;
+    height: 80px;
+    padding: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__initials {
+    height: 100%;
+    width: 100%;
+    color: rgba(238, 197, 150, 0.767);
+    font-size: 3.3em;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.JobApplyButton {
+  cursor: pointer;
+  display: inline-block;
+  z-index: 2;
+
+  width: 100%;
+  border: 0;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: inherit;
+  font-weight: bold;
+  background-color: var(--primary-color);
+  padding: 10px;
+  margin: 0 auto;
+  text-align: center;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
