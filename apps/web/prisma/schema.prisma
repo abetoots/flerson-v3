@@ -5,6 +5,10 @@ generator client {
     provider = "prisma-client-js"
 }
 
+generator zod {
+    provider = "prisma-zod-generator"
+}
+
 datasource db {
     provider = "mongodb"
     // NOTE: When using postgresql, mysql or sqlserver, uncomment the @db.Text annotations in model Account below
@@ -29,16 +33,16 @@ model Job {
     title                         String
     description                   String
     howToApply                    String
-    employer                      Employer         @relation(fields: [employerId, employerName], references: [id, name])
+    employer                      Employer         @relation(fields: [employerId], references: [id])
     employerId                    String           @db.ObjectId
-    employerName                  String
     employmentType                EmploymentType[]
     applicantLocationRequirements Country          @default(Worldwide)
     validThrough                  DateTime?
-    categories                    Category[]
+    category                      Category
     directApply                   Boolean
     applyUrl                      String?
     applyEmail                    String?
+    imageUrl                      String?
     tags                          Tag[]            @relation(fields: [tagIds], references: [id])
     tagIds                        String[]         @db.ObjectId
     datePosted                    DateTime         @default(now())
@@ -93,8 +97,6 @@ model Employer {
     logo String?
     url  String
     type EmployerType @default(COMPANY)
-
-    @@unique([id, name])
 }
 
 enum EmployerType {
@@ -104,7 +106,7 @@ enum EmployerType {
 
 model Tag {
     id     String   @id @default(auto()) @map("_id") @db.ObjectId
-    name   String
+    name   String   @unique
     jobs   Job[]    @relation(fields: [jobIds], references: [id])
     jobIds String[] @db.ObjectId
 }

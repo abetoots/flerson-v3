@@ -1,164 +1,230 @@
 import { PrismaClient } from "@prisma/client";
-import type { Job, Employer, JobSeeker } from "@prisma/client";
 import { ObjectId } from "mongodb";
 import { subDays } from "date-fns";
 import { DEFAULT_HIGHLIGHT_HEX } from "~/utils/constants";
+import type { EmploymentType, Prisma, Category, Job } from "@prisma/client";
+import { getRandomItems } from "~/utils/utils";
 const db = new PrismaClient();
 
-async function seed() {
-  await Promise.all([
-    ...getJobs().map((job) => {
-      return db.job.create({ data: job });
-    }),
-    ...getEmployers().map((emp) => db.employer.create({ data: emp })),
-    ...getJobSeekers().map((seeker) => db.jobSeeker.create({ data: seeker })),
-  ]);
-}
+type Titles =
+  | "Full Stack Developer"
+  | "Virtual Assistant"
+  | "Social Media Manager"
+  | "Graphic Designer"
+  | "Copywriter";
 
-const job1Id = new ObjectId().toString();
-const job2Id = new ObjectId().toString();
-const job3Id = new ObjectId().toString();
+const titles: Titles[] = [
+  "Full Stack Developer",
+  "Virtual Assistant",
+  "Social Media Manager",
+  "Graphic Designer",
+  "Copywriter",
+];
 
-const employer1Id = new ObjectId().toString();
-const employer1Name = "Flerson";
-const employer2Id = new ObjectId().toString();
-const employer2Name = "WrittenTrove";
-const employer3Id = new ObjectId().toString();
-const employer3Name = "Kuzuli";
+const employmentTypes: EmploymentType[] = [
+  "FULL_TIME",
+  "PART_TIME",
+  "CONTRACTOR",
+  "OTHER",
+  "TEMPORARY",
+];
 
-const jobseeker1Id = new ObjectId().toString();
-const jobseeker2Id = new ObjectId().toString();
+const programmingTags = [
+  "typescript",
+  "node",
+  "react",
+  "svelte",
+  "rust",
+  "solid",
+  "c++",
+  "vue",
+  "angular",
+  "php",
+  "go",
+  "java",
+  "python",
+  "laravel",
+  "docker",
+  "aws",
+];
+const marketingTags = ["facebook", "twitter", "tiktok", "pinterest", "email"];
 
-const category1Id = new ObjectId().toString();
-const category2Id = new ObjectId().toString();
-const category3Id = new ObjectId().toString();
+const designTags = [
+  "photoshop",
+  "illustrator",
+  "canva",
+  "logo design",
+  "adobe xd",
+];
+
+const vaTags = ["excel", "admin", "data entry", "smm", "customer service"];
+
+const copyWritingTags = ["copywriting", "contentwriting"];
+
+const hexColors = [
+  "#D0EFB1",
+  "#D0EFB1",
+  "#613A3A",
+  "#D8B4E2",
+  "#55286F",
+  "#E5F993",
+  "#44FFD1",
+  "#90FCF9",
+  null,
+  DEFAULT_HIGHLIGHT_HEX,
+];
+
+const priorities = [1, 2, 3];
 
 const now = new Date();
 const yesterday = subDays(now, 1);
-const lastweek = subDays(now, 7);
+const pastWeek = subDays(now, 7);
+const past30days = subDays(now, 25);
 
-function getJobs(): Job[] {
-  return [
-    {
-      id: job1Id,
-      title: "Social Media Manager",
-      applyEmail: null,
-      applyUrl: null,
-      applicantLocationRequirements: "Antarctica",
-      applicantIds: [jobseeker1Id],
-      categories: ["Marketing"],
-      datePosted: now,
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-      directApply: true,
-      employerId: employer1Id,
-      employerName: employer1Name,
-      employmentType: ["FULL_TIME"],
-      howToApply:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-      priority: 1,
-      savedByIds: [jobseeker1Id],
-      tagIds: [],
-      updatedAt: now,
-      validThrough: null,
-      highlight: null,
+const dates = [now, yesterday, pastWeek, past30days];
+
+function getRandomJob(
+  employers: Prisma.EmployerCreateInput[],
+  jobseekers: Prisma.JobSeekerCreateInput[]
+): Prisma.JobCreateInput {
+  const title = getRandomItems(titles, 1)[0] as Titles;
+  const date = getRandomItems(dates, 1)[0];
+  const employer = getRandomItems(employers, 1)[0];
+  const empType = getRandomItems(employmentTypes);
+  const priority = getRandomItems(priorities, 1)[0] as 1 | 2 | 3;
+  const savedBy = getRandomItems(jobseekers);
+  let tagsToUse: string[] = [];
+  let category: Category = "NonTech";
+  if (title === "Full Stack Developer") {
+    tagsToUse = programmingTags;
+    category = "Programming";
+  }
+  if (title === "Virtual Assistant") {
+    tagsToUse = vaTags;
+    category = "VA";
+  }
+  if (title === "Social Media Manager") {
+    tagsToUse = marketingTags;
+    category = "Marketing";
+  }
+
+  if (title === "Graphic Designer") {
+    tagsToUse = designTags;
+    category = "Design";
+  }
+  if (title === "Copywriter") {
+    tagsToUse = copyWritingTags;
+    category = "Writing";
+  }
+  const tags = getRandomItems(tagsToUse);
+  const highlight = getRandomItems(hexColors, 1)[0];
+
+  return {
+    title,
+    applyEmail: null,
+    applyUrl: null,
+    applicantLocationRequirements: "Worldwide",
+    category,
+    imageUrl: null,
+    datePosted: date,
+    description:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+    directApply: false,
+    employer: {
+      connect: {
+        id: employer?.id,
+      },
     },
-    {
-      id: job2Id,
-      title: "Virtual Assistant",
-      applyEmail: null,
-      applyUrl: null,
-      applicantLocationRequirements: "Philippines",
-      applicantIds: [jobseeker2Id],
-      categories: ["VA"],
-      datePosted: yesterday,
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-      directApply: true,
-      employerId: employer2Id,
-      employerName: employer2Name,
-      employmentType: ["FULL_TIME", "PART_TIME"],
-      howToApply:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-      priority: 2,
-      savedByIds: [jobseeker2Id],
-      tagIds: [],
-      updatedAt: yesterday,
-      validThrough: null,
-      highlight: DEFAULT_HIGHLIGHT_HEX,
+    employmentType: empType,
+    howToApply:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+    priority,
+    savedBy: {
+      connect: savedBy.map((i) => ({ id: i.id })),
     },
-    {
-      id: job3Id,
-      title: "Full Stack Developer",
-      applyEmail: null,
-      applyUrl: null,
-      applicantLocationRequirements: "Worldwide",
-      applicantIds: [],
-      categories: ["Programming"],
-      datePosted: lastweek,
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-      directApply: true,
-      employerId: job3Id,
-      employerName: employer2Name,
-      employmentType: ["FULL_TIME", "PART_TIME", "CONTRACTOR"],
-      howToApply:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-      priority: 3,
-      savedByIds: [jobseeker1Id, jobseeker2Id],
-      tagIds: [],
-      updatedAt: lastweek,
-      validThrough: null,
-      highlight: DEFAULT_HIGHLIGHT_HEX,
+    tags: {
+      connectOrCreate: tags.map((t) => ({
+        create: { name: t },
+        where: { name: t },
+      })),
     },
-  ];
+    updatedAt: date,
+    validThrough: null,
+    highlight,
+  };
 }
 
-function getEmployers(): Employer[] {
-  return [
+function getEmployers() {
+  const employers: Prisma.EmployerCreateInput[] = [
     {
-      id: employer1Id,
-      name: employer1Name,
+      id: new ObjectId().toString(),
+      name: "Flerson",
       logo: null,
       type: "COMPANY",
       url: "https://flerson.com",
     },
     {
-      id: employer2Id,
-      name: employer2Name,
+      id: new ObjectId().toString(),
+      name: "WrittenTrove",
       logo: null,
       type: "COMPANY",
       url: "https://writtentrove.com",
     },
     {
-      id: employer3Id,
-      name: employer3Name,
+      id: new ObjectId().toString(),
+      name: "Kuzuli",
       logo: null,
       type: "SINGLE",
       url: "https://kuzuli.com",
     },
   ];
+  return employers;
 }
 
-function getJobSeekers(): JobSeeker[] {
-  return [
+function getJobSeekers() {
+  const jobseekers: Prisma.JobSeekerCreateInput[] = [
     {
-      id: jobseeker1Id,
-      appliedIds: [job1Id],
+      id: new ObjectId().toString(),
       email: "sample@email.com",
       firstName: "John",
       lastName: "Doe",
-      savedIds: [job1Id, job3Id],
     },
     {
-      id: jobseeker2Id,
-      appliedIds: [job2Id],
+      id: new ObjectId().toString(),
       email: "sample2@email.com",
       firstName: "Mark",
       lastName: "Kram",
-      savedIds: [job2Id, job3Id],
     },
   ];
+
+  return jobseekers;
 }
 
-await seed();
+async function resetDb() {
+  await db.job.deleteMany({});
+  await db.jobSeeker.deleteMany({});
+  await db.employer.deleteMany({});
+  await db.tag.deleteMany({});
+}
+
+async function seed(iterations = 1) {
+  const employers = getEmployers();
+  const jobseekers = getJobSeekers();
+  await Promise.all([
+    ...employers.map((item) => db.employer.create({ data: item })),
+    ...jobseekers.map((item) => db.jobSeeker.create({ data: item })),
+  ]);
+
+  const batchQueries: Prisma.Prisma__JobClient<Job, never>[] = [];
+
+  for (let i = 0; i < iterations; i++) {
+    batchQueries.push(
+      db.job.create({ data: getRandomJob(employers, jobseekers) })
+    );
+  }
+
+  await db.$transaction(batchQueries);
+}
+
+await resetDb();
+await seed(50);
