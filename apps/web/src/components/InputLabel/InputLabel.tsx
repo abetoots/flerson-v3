@@ -1,4 +1,4 @@
-import { exposeStyles } from "~/utils/styles";
+import { exposeStyles } from "~/lib/styles";
 import classNames from "classnames";
 
 const useStyles = exposeStyles({

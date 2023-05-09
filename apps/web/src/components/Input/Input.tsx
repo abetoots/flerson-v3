@@ -5,10 +5,10 @@ import InputLabel from "~/components/InputLabel/InputLabel";
 //Misc
 import { forwardRef } from "react";
 import classNames from "classnames";
-import { exposeStyles } from "~/utils/styles";
+import { exposeStyles } from "~/lib/styles";
 
 //Types
-import type { BaseElementConfig } from "~/utils/input-types";
+import type { BaseElementConfig } from "~/lib/input-types";
 
 export type InputElementConfig = BaseElementConfig & {
   id: string;

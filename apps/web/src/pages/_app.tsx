@@ -3,7 +3,7 @@ import { SessionProvider } from "next-auth/react";
 import { ToastContainer } from "react-toastify";
 
 //Misc
-import { api } from "~/utils/api";
+import { api } from "~/lib/api";
 import { Dosis, Inter } from "next/font/google";
 import "~/styles/globals.css";
 

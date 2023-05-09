@@ -14,13 +14,13 @@ import { H2, H3 } from "~/components/typography";
 
 //Misc
 import styles from "./index.module.css";
-import { api } from "~/utils/api";
+import { api } from "~/lib/api";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useQueryClient } from "@tanstack/react-query";
 import { getQueryKey } from "@trpc/react-query";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { createQueryString } from "~/utils/utils";
+import { createQueryString } from "~/lib/utils";
 import { debugPagination } from "flerson-lib";
 
 //Types

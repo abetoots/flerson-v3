@@ -6,7 +6,7 @@ import Button from "~/components/Button/Button";
 //Misc
 import { useDebouncedCallback } from "use-debounce";
 import React from "react";
-import { exposeStyles } from "~/utils/styles";
+import { exposeStyles } from "~/lib/styles";
 
 export type SearchProps = {
   enableAutoSearch?: boolean;

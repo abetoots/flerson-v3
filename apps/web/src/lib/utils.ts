@@ -38,3 +38,12 @@ export function getRandomItems<T>(array: T[], numItems?: number): T[] {
 
   return result;
 }
+
+//no need for clsx as cva already has an alias for clsx
+import { cx } from "class-variance-authority";
+import { twMerge } from "tailwind-merge";
+import type { ClassValue } from "clsx";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(cx(inputs));
+}

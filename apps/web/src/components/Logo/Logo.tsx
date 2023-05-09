@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { exposeStyles } from "~/utils/styles";
+import { exposeStyles } from "~/lib/styles";
 
 //STYLES API
 //Define which styles of the component you want to expose. Only what you expose can be overridden.

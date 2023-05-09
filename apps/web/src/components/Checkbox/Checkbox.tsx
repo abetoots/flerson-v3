@@ -6,11 +6,11 @@ import InputLabel from "~/components/InputLabel/InputLabel";
 
 //Misc
 import React, { forwardRef } from "react";
-import { exposeStyles } from "~/utils/styles";
+import { exposeStyles } from "~/lib/styles";
 import classNames from "classnames";
 
 //Types
-import type { BaseElementConfig } from "~/utils/input-types";
+import type { BaseElementConfig } from "~/lib/input-types";
 
 export type CheckboxOptionValue = string | CheckboxOptionObject;
 

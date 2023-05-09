@@ -1,9 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 import { ObjectId } from "mongodb";
 import { subDays } from "date-fns";
-import { DEFAULT_HIGHLIGHT_HEX } from "~/utils/constants";
+import { DEFAULT_HIGHLIGHT_HEX } from "~/lib/constants";
 import type { EmploymentType, Prisma, Category, Job } from "@prisma/client";
-import { getRandomItems } from "~/utils/utils";
+import { getRandomItems } from "~/lib/utils";
 const db = new PrismaClient();
 
 type Titles =
